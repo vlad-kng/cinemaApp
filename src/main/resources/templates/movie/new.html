@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>New movie</title>
+</head>
+<body>
+
+<form th:method="POST" th:action="@{/movies/new/add}" th:object="${movie}">
+    <label for="name">Enter name: </label>
+    <input type="text" th:field="*{name}" id="name"/>
+    <div style="color:red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name Error</div>
+    <br/>
+    <label for="info">Enter info: </label>
+    <input type="text" th:field="*{info}" id="info"/>
+    <br/>
+    <label for="rate">Enter rate: </label>
+    <input type="text" th:field="*{rate}" id="rate"/>
+    <br/>
+    <label for="yearOfProduction">Enter year: </label>
+    <input type="text" th:field="*{yearOfProduction}" id="yearOfProduction"/>
+    <div style="color:red" th:if="${#fields.hasErrors('yearOfProduction')}" th:errors="*{yearOfProduction}">Year Error</div>
+    <br/>
+    <label for="genre">Genre: </label>
+    <input type="text" th:field="*{genre}" id="genre"/>
+    <div style="color:red" th:if="${#fields.hasErrors('genre')}" th:errors="*{genre}">Genre Error</div>
+    <br/>
+
+    <label for="directorName">Director: </label>
+    <input type="text" th:field="*{directorName}" id="directorName"/>
+<!--    <div style="color:red" th:if="${#fields.hasErrors('director')}" th:errors="*{director}">Director Error</div>-->
+    <br/>
+    <label for="actorsName">Actor: </label>
+    <input type="text" th:field="*{actorsName}" id="actorsName"/>
+    <br/>
+
+    <input type="submit" value="Create!"/>
+</form>
+
+<form th:method="GET" th:action="@{/movies}">
+    <input type="submit" value="Return">
+</form>
+
+
+</body>
+</html>
+
+<!--<form th:method="PATCH" th:action="@{/book/{id}/toHand/add(id=${book.getId()})}" th:object="${book}">-->
+<!--    <label for="person">Выберите человека:</label>-->
+<!--    <select th:object="${person}" th:field="*{id}" id="person">-->
+<!--        <option th:each="person : ${people}" th:value="${person.getId()}"-->
+<!--                th:text="${person.getName()}"-->
+<!--                th:if="${person.getId()>0}"></option>-->
+<!--    </select>-->
+<!--    <input type="submit" value="Выдать книгу"/>-->
+
+<!--</form>-->

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>All actors</title>
+</head>
+<body>
+<p>All actors:</p>
+<div th:each="actor : ${actors}">
+  <a th:href="@{/actors/{id}(id=${actor.getId()})}"
+     th:text="${actor.getName()}">user</a>
+</div>
+<br/>
+<hr/>
+<br>
+<a href="/movies">All movies</a>
+
+</body>
+</html>

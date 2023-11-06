@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Добавить актера</title>
+</head>
+<body>
+
+<form th:method="PATCH" th:action="@{/movies/{id}/addActor/add(id=${movie.getId()})}" th:object="${movie}">
+    <label for="actor">Выберите актера:</label>
+    <select th:object="${actor}" th:field="*{id}" id="actor">
+        <option th:each="actor : ${actors}" th:value="${actor.getId()}"
+                th:text="${actor.getName()}"></option>
+    </select>
+    <input type="submit" value="Добавить актера"/>
+
+</form>
+<form th:method="GET" th:action="@{/movies/{id}/edit(id=${movie.getId()})}">
+    <input type="submit" value="Return">
+</form>
+
+</body>
+</html>
+
+
+

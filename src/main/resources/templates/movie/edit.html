@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://thymeleaf.org ">
+<head>
+  <meta charset="UTF-8">
+  <title>Update movie</title>
+</head>
+<body>
+
+<form th:method="PATCH" th:action="@{/movies/new/add}" th:object="${movie}">
+  <label for="name">Enter name: </label>
+  <input type="text" th:field="*{name}" id="name"/>
+  <div style="color:red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name Error</div>
+  <br/>
+  <label for="info">Enter info: </label>
+  <input type="text" th:field="*{info}" id="info"/>
+  <br/>
+  <label for="rate">Enter rate: </label>
+  <input type="text" th:field="*{rate}" id="rate"/>
+  <br/>
+  <label for="yearOfProduction">Enter year: </label>
+  <input type="text" th:field="*{yearOfProduction}" id="yearOfProduction"/>
+  <div style="color:red" th:if="${#fields.hasErrors('yearOfProduction')}" th:errors="*{yearOfProduction}">Year Error</div>
+  <br/>
+  <label for="genre">Genre: </label>
+  <input type="text" th:field="*{genre}" id="genre"/>
+  <div style="color:red" th:if="${#fields.hasErrors('genre')}" th:errors="*{genre}">Genre Error</div>
+  <br/>
+
+  <label for="director">Director: </label>
+  <input type="text" th:field="*{director}" id="director"/>
+  <!--    <div style="color:red" th:if="${#fields.hasErrors('director')}" th:errors="*{director}">Director Error</div>-->
+  <br/>
+  <input type="submit" value="Update!"/>
+</form>
+
+<div th:each="actor : ${movie.getActors()}">
+    <a th:href="@{/actors/{id}(id=${actor.getId()})}"
+       th:text="${actor.getName()}">actor</a>
+    <form th:method="GET" th:action="@{/movies/{id}/{actorId}/remove(id=${movie.getId()}, actorId=${actor.getId})}"
+          th:object="${movie}" >
+      <input type="submit" value="X">
+    </form>
+  </div>
+<br/>
+  <a th:href="@{/movies/{id}/addActor(id=${movie.getId()})}">Add actor</a>
+
+
+<form th:method="GET" th:action="@{/movies}">
+  <input type="submit" value="Return">
+</form>
+
+</body>
+</html>

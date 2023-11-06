@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://thymeleaf.org ">
+<head>
+  <meta charset="UTF-8">
+  <title>Update actor</title>
+</head>
+<body>
+
+<form th:method="PATCH" th:action="@{/actors/{id}(id=${actor.getId()})}" th:object="${actor}">
+  <label for="name">Enter name: </label>
+  <input type="text" th:field="*{name}" id="name"/>
+  <div style="color:red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name Error</div>
+  <br/>
+  <div th:each="movie : ${movies}">
+    <a th:href="@{/movies/{id}(id=${movie.getId()})}"
+       th:text="${movie.getName()}">movie</a>
+    <a th:method="PATCH" th:action="@{/actors/{id}/{movieId}/remove(id=${actor.getId()}, movieId=${movie.getId})}"
+       th:object="${actor}">
+      <input type="submit" value="Remove movie">
+    </a>
+
+  </div>
+
+  <br/>
+  <input type="submit" value="Update!"/>
+</form>
+<form th:method="GET" th:action="@{/actors/{id}(id=${actor.getId()})}">
+  <input type="submit" value="Return">
+</form>
+
+</body>
+</html>

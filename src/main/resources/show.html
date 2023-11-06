@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Book</title>
+</head>
+<body>
+<p th:text="${book.getName() + ', ' + book.getAuthor()}">VALUE</p>
+<p th:text="${'Year: ' + book.getYear()}">VALUE</p>
+<a th:href="@{/people/{id}/(id=${person.getId()})}"
+   th:text="${'Handler: ' + person.getName()}"
+   th:if="${person.getId()>0}">Book is not Taken</a>
+<form th:method="PATCH" th:action="@{/book/{id}/return(id=${book.getId()})}" th:object="${book}"  th:if="${person.getId()>0}">
+    <input type="submit" value="Delete handler">
+</form>
+<a th:href="@{/book/{id}/toHand(id=${book.getId()})}"
+   th:if="${person.getId()<1}">Take book to hand</a>
+<br/>
+<a th:href="@{/book/{id}/edit(id=${book.getId()})}">edit</a>
+<br/>
+<br/>
+<a href="/book">return</a>
+<br/>
+<form th:method="DELETE" th:action="@{/book/{id}/delete(id=${book.getId()})}">
+    <input type="submit" value="Delete">
+</form>
+</body>
+</html>

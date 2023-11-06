@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>All movies</title>
+</head>
+<body>
+<form th:method="GET" th:action="@{/movies/search}">
+    <input type="submit" value="Search movie">
+</form>
+<p>All movies:</p>
+<div th:each="movie : ${movies}">
+  <a th:href="@{/movies/{id}(id=${movie.getId()})}"
+     th:text="${movie.getName() + ', ' + movie.getYearOfProduction()}">user</a>
+</div>
+<br/>
+<hr/>
+<a href="/movies/new">Create new movie</a>
+<br>
+<a href="/actors">All actors</a>
+<br/>
+<br/>
+<form th:method="POST" th:action="@{/logout}">
+    <input type="submit" value="logout">
+</form>
+
+</body>
+</html>
