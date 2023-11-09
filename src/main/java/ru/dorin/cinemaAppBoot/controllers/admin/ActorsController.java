@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Set;
 
 @Controller
-@RequestMapping("/actors")
+@RequestMapping("admin/actors")
 public class ActorsController {
     private final MoviesService moviesService;
     private final ActorService actorService;
@@ -29,7 +29,7 @@ public class ActorsController {
     @GetMapping()
     public String index(Model model) {
         model.addAttribute("actors", actorService.findAll());
-        return "actor/index";
+        return "admin/actor/index";
     }
     @GetMapping("/{id}")
     public String show(Model model, @PathVariable("id") int id){
@@ -37,7 +37,7 @@ public class ActorsController {
         Set<Movie> movies = actor.getMovies();
         model.addAttribute("movies", movies);
         model.addAttribute("actor", actor);
-        return "actor/show";
+        return "admin/actor/show";
     }
     @GetMapping("/{id}/edit")
     public String edit(Model model, @PathVariable("id") int id) {
@@ -45,14 +45,14 @@ public class ActorsController {
         Set<Movie> movies = actor.getMovies();
         model.addAttribute("actor", actor);
         model.addAttribute("movies", movies);
-        return "actor/edit";
+        return "admin/actor/edit";
     }
 
     @PatchMapping("/{id}")
     public String update(@ModelAttribute("actor") Actor actor,
                          @PathVariable("id") int id){
         actorService.update(id,actor);
-        return "redirect:/actors";
+        return "redirect:/admin/actors";
     }
     @GetMapping("/{id}/{movieId}/remove")
     public String removeMovie(@ModelAttribute("actor") Actor actor,
@@ -61,6 +61,6 @@ public class ActorsController {
         actor = actorService.findOne(id);
         actor.removeMovie(movie);
         actorService.save(actor);
-        return "redirect:/actors/{id}/edit";
+        return "redirect:/admin/actors/{id}/edit";
     }
 }

@@ -14,7 +14,7 @@ import ru.dorin.cinemaAppBoot.services.MoviesService;
 import java.util.Set;
 
 @Controller
-@RequestMapping("/directors")
+@RequestMapping("/admin/directors")
 public class DirectorsController {
     private final MoviesService moviesService;
     private final DirectorService directorService;
@@ -28,7 +28,7 @@ public class DirectorsController {
     @GetMapping()
     public String index(Model model) {
         model.addAttribute("directors", directorService.findAll());
-        return "director/index";
+        return "admin/director/index";
     }
     @GetMapping("/{id}")
     public String show(Model model, @PathVariable("id") int id){
@@ -36,7 +36,7 @@ public class DirectorsController {
         Set<Movie> movies = director.getMovies();
         model.addAttribute("movies", movies);
         model.addAttribute("director", director);
-        return "director/show";
+        return "admin/director/show";
     }
     @GetMapping("/{id}/edit")
     public String edit(Model model, @PathVariable("id") int id) {
@@ -44,14 +44,14 @@ public class DirectorsController {
         Set<Movie> movies = director.getMovies();
         model.addAttribute("director", director);
         model.addAttribute("movies", movies);
-        return "director/edit";
+        return "admin/director/edit";
     }
 
     @PatchMapping("/{id}")
     public String update(@ModelAttribute("actor") Director director,
                          @PathVariable("id") int id){
         directorService.update(id,director);
-        return "redirect:/directors/{id}";
+        return "redirect:/admin/directors/{id}";
     }
     @GetMapping("/{id}/{movieId}/remove")
     public String removeMovie(@ModelAttribute("director") Director director,
@@ -60,6 +60,6 @@ public class DirectorsController {
         director = directorService.findOne(id);
         director.removeMovie(movie);
         directorService.save(director);
-        return "redirect:/directors/{id}/edit";
+        return "redirect:/admin/directors/{id}/edit";
     }
 }

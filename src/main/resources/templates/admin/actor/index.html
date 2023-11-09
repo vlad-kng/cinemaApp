@@ -7,13 +7,13 @@
 <body>
 <p>All actors:</p>
 <div th:each="actor : ${actors}">
-  <a th:href="@{/actors/{id}(id=${actor.getId()})}"
+  <a th:href="@{/admin/actors/{id}(id=${actor.getId()})}"
      th:text="${actor.getName()}">user</a>
 </div>
 <br/>
 <hr/>
 <br>
-<a href="/movies">All movies</a>
+<a href="/admin/movies">All movies</a>
 
 </body>
 </html>

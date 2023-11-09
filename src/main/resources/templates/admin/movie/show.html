@@ -7,24 +7,24 @@
 <body>
 <p th:text="${'Movie:' + movie.getName()}">VALUE</p>
 <p th:text="${'Year of production: ' + movie.getYearOfProduction()}">VALUE</p>
-<a th:href="@{/directors/{id}(id=${movie.getDirectorId()})}"
+<a th:href="@{/admin/directors/{id}(id=${movie.getDirectorId()})}"
    th:text="${'Director: ' + movie.getDirectorName()}">user</a>
 <br/>
 <p th:text="${'Info: ' + movie.getInfo()}">VALUE</p>
 <p th:text="${'Rate: ' + movie.getRate()}">VALUE</p>
 <p>Actors: </p>
 <div th:each="actor : ${actors}">
-    <a th:href="@{/actors/{id}(id=${actor.getId()})}"
+    <a th:href="@{/admin/actors/{id}(id=${actor.getId()})}"
        th:text="${actor.getName()}">user</a>
 </div>
 <br/>
-<form th:method="GET" th:action="@{/movies/{id}/edit(id=${movie.getId()})}">
+<form th:method="GET" th:action="@{/admin/movies/{id}/edit(id=${movie.getId()})}">
     <input type="submit" value="Edit">
 </form>
-<form th:method="GET" th:action="@{/movies}">
+<form th:method="GET" th:action="@{/admin/movies}">
     <input type="submit" value="Return">
 </form>
-<form th:method="DELETE" th:action="@{/movies/{id}/delete(id=${movie.getId()})}">
+<form th:method="DELETE" th:action="@{/admin/movies/{id}/delete(id=${movie.getId()})}">
     <input type="submit" value="Delete">
 </form>
 </body>

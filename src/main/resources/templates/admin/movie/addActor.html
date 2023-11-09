@@ -6,7 +6,7 @@
 </head>
 <body>
 
-<form th:method="PATCH" th:action="@{/movies/{id}/addActor/add(id=${movie.getId()})}" th:object="${movie}">
+<form th:method="PATCH" th:action="@{/admin/movies/{id}/addActor/add(id=${movie.getId()})}" th:object="${movie}">
     <label for="actor">Выберите актера:</label>
     <select th:object="${actor}" th:field="*{id}" id="actor">
         <option th:each="actor : ${actors}" th:value="${actor.getId()}"
@@ -15,7 +15,7 @@
     <input type="submit" value="Добавить актера"/>
 
 </form>
-<form th:method="GET" th:action="@{/movies/{id}/edit(id=${movie.getId()})}">
+<form th:method="GET" th:action="@{/admin/movies/{id}/edit(id=${movie.getId()})}">
     <input type="submit" value="Return">
 </form>
 

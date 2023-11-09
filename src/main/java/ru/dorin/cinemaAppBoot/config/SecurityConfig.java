@@ -3,6 +3,7 @@ package ru.dorin.cinemaAppBoot.config;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -27,23 +28,20 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-
     @Bean
-    SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
+    SecurityFilterChain adminFilterChain(HttpSecurity http) throws Exception{
         return http
-                .securityMatchers((matchers)-> matchers.requestMatchers("/**"))
-                .authorizeHttpRequests( auth -> {
-                    auth.requestMatchers("/admin").hasRole("ADMIN");
-                    auth.requestMatchers("/auth/**", "auth/registration","/error").permitAll();
-                    auth.anyRequest().hasAnyRole("USER", "ADMIN");
-                    //auth.requestMatchers("/error").permitAll();
+                .authorizeHttpRequests( auth -> {auth
+                    .requestMatchers("/auth/**","/error", "/process_login").permitAll()
+                    .requestMatchers("/admin/**").hasRole("ADMIN")
+                    .anyRequest().hasAnyRole("USER", "ADMIN");
                 })
                 .formLogin(new Customizer<FormLoginConfigurer<HttpSecurity>>() {
                     @Override
                     public void customize(FormLoginConfigurer<HttpSecurity> login) {
                      login.loginPage("/auth/login")
-                                .loginProcessingUrl("/process_login")
-                                .defaultSuccessUrl("/movies", true)
+                                .loginProcessingUrl("/auth/process_login")
+                                .defaultSuccessUrl("/admin/movies", false)
                                 .failureForwardUrl("/auth/login?error");
                     }
                 })
@@ -55,4 +53,5 @@ public class SecurityConfig {
                 })
                 .build();
     }
+
 }

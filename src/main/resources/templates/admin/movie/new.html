@@ -6,7 +6,7 @@
 </head>
 <body>
 
-<form th:method="POST" th:action="@{/movies/new/add}" th:object="${movie}">
+<form th:method="POST" th:action="@{/admin/movies/new/add}" th:object="${movie}">
     <label for="name">Enter name: </label>
     <input type="text" th:field="*{name}" id="name"/>
     <div style="color:red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name Error</div>
@@ -33,11 +33,15 @@
     <label for="actorsName">Actor: </label>
     <input type="text" th:field="*{actorsName}" id="actorsName"/>
     <br/>
+    <label for="poster">Enter poster URL: </label>
+    <input type="text" th:field="*{poster}" id="poster"/>
+    <div style="color:red" th:if="${#fields.hasErrors('poster')}" th:errors="*{poster}">Poster Error</div>
+    <br/>
 
     <input type="submit" value="Create!"/>
 </form>
 
-<form th:method="GET" th:action="@{/movies}">
+<form th:method="GET" th:action="@{/admin/movies}">
     <input type="submit" value="Return">
 </form>
 

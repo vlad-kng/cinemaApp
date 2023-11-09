@@ -8,17 +8,17 @@
 <p th:text="${'actor:' + actor.getName()}">VALUE</p>
 <p>Movies: </p>
 <div th:each="movie : ${movies}">
-    <a th:href="@{/movies/{id}(id=${movie.getId()})}"
+    <a th:href="@{/admin/movies/{id}(id=${movie.getId()})}"
        th:text="${movie.getName()}">movie</a>
 </div>
 <br/>
-<form th:method="GET" th:action="@{/actors/{id}/edit(id=${actor.getId()})}">
+<form th:method="GET" th:action="@{/admin/actors/{id}/edit(id=${actor.getId()})}">
     <input type="submit" value="Edit">
 </form>
-<form th:method="GET" th:action="@{/actors}">
+<form th:method="GET" th:action="@{/admin/actors}">
     <input type="submit" value="Return">
 </form>
-<form th:method="DELETE" th:action="@{/actors/{id}/delete(id=${actor.getId()})}">
+<form th:method="DELETE" th:action="@{/admin/actors/{id}/delete(id=${actor.getId()})}">
     <input type="submit" value="Delete">
 </form>
 </body>

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${user.getName()}">User</title>
+</head>
+<body>
+<p th:text="${'User: ' + user.getName()}">VALUE</p>
+<p th:text="${'Role: ' + user.getRole().toString()}">VALUE</p>
+<br/>
+<form th:method="PATCH" th:action="@{/admin/users/{id}/setRole(id=${user.getId()})}">
+    <input type="submit" value="Set another role"/>
+</form>
+<br/>
+<form th:method="GET" th:action="@{/admin/users}">
+    <input type="submit" value="Return">
+</form>
+<form th:method="DELETE" th:action="@{/admin/users/{id}/delete(id=${user.getId()})}">
+    <input type="submit" value="Delete">
+</form>
+</body>
+</html>

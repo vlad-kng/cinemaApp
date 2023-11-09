@@ -2,9 +2,13 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>admin page</title>
+    <title>Admin page</title>
 </head>
 <body>
-Admin page
+<a th:href="@{/admin/movies}"
+   th:text="'Movies upload: ' + ${movies}">user</a>
+<br>
+<a th:href="@{/admin/users}"
+   th:text="'Users register: ' + ${users}">user</a>
 </body>
 </html>

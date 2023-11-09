@@ -7,15 +7,15 @@
 </head>
 <body>
 
-<form th:method="PATCH" th:action="@{/actors/{id}(id=${actor.getId()})}" th:object="${actor}">
+<form th:method="PATCH" th:action="@{/admin/actors/{id}(id=${actor.getId()})}" th:object="${actor}">
   <label for="name">Enter name: </label>
   <input type="text" th:field="*{name}" id="name"/>
   <div style="color:red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name Error</div>
   <br/>
   <div th:each="movie : ${movies}">
-    <a th:href="@{/movies/{id}(id=${movie.getId()})}"
+    <a th:href="@{/admin/movies/{id}(id=${movie.getId()})}"
        th:text="${movie.getName()}">movie</a>
-    <a th:method="PATCH" th:action="@{/actors/{id}/{movieId}/remove(id=${actor.getId()}, movieId=${movie.getId})}"
+    <a th:method="PATCH" th:action="@{/admin/actors/{id}/{movieId}/remove(id=${actor.getId()}, movieId=${movie.getId})}"
        th:object="${actor}">
       <input type="submit" value="Remove movie">
     </a>
@@ -25,7 +25,7 @@
   <br/>
   <input type="submit" value="Update!"/>
 </form>
-<form th:method="GET" th:action="@{/actors/{id}(id=${actor.getId()})}">
+<form th:method="GET" th:action="@{/admin/actors/{id}(id=${actor.getId()})}">
   <input type="submit" value="Return">
 </form>
 

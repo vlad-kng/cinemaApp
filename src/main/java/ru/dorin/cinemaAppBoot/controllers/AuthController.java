@@ -31,6 +31,9 @@ public class AuthController {
         return "auth/login";
     }
 
+    @PostMapping("/process_login")
+    public void login(){};
+
     @GetMapping("/registration")
     public String registrationPage(@ModelAttribute("user") UserProfile user) {
         return "auth/registration";

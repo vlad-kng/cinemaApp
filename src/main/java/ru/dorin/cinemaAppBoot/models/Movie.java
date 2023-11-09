@@ -52,20 +52,24 @@ public class Movie {
     @Column(name = "movie_genre")
     @Enumerated(EnumType.STRING)
     private Genre genre;
+    @NotNull(message = "the movie should have a poster")
+    @Column(name = "poster")
+    private String poster;
 
 
     public Movie() {
     }
 
-    public Movie(String name, int yearOfProduction, double rate, String info, Director director, Genre genre) {
+    public Movie(String name, int yearOfProduction, double rate, String info, Director director, Genre genre, String poster) {
         this.name = name;
         this.yearOfProduction = yearOfProduction;
         this.rate = rate;
         this.info = info;
         this.director = director;
         this.genre = genre;
+        this.poster = poster;
     }
-    public Movie(String name, int yearOfProduction, double rate, String info, Genre genre, String directorName, String actorName) {
+    public Movie(String name, int yearOfProduction, double rate, String info, Genre genre, String directorName, String actorName, String poster) {
         this.name = name;
         this.yearOfProduction = yearOfProduction;
         this.rate = rate;
@@ -73,6 +77,7 @@ public class Movie {
         this.genre = genre;
         this.director = new Director(directorName);
         this.actors = new ArrayList<>(Collections.singletonList(new Actor(actorName)));
+        this.poster=poster;
     }
 
     public int getId() {
@@ -113,6 +118,14 @@ public class Movie {
 
     public void setInfo(String info) {
         this.info = info;
+    }
+
+    public String getPoster() {
+        return poster;
+    }
+
+    public void setPoster(String poster) {
+        this.poster = poster;
     }
 
     public Director getDirector() {

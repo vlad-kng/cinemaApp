@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${movie.getName()}">Movie</title>
+</head>
+<body>
+<p th:text="${'Movie:' + movie.getName()}">VALUE</p>
+<p th:text="${'Year of production: ' + movie.getYearOfProduction()}">VALUE</p>
+<a th:href="@{/directors/{id}(id=${movie.getDirectorId()})}"
+   th:text="${'Director: ' + movie.getDirectorName()}">user</a>
+<br/>
+<p th:text="${'Info: ' + movie.getInfo()}">VALUE</p>
+<p th:text="${'Rate: ' + movie.getRate()}">VALUE</p>
+<p>Actors: </p>
+<div th:each="actor : ${actors}">
+    <a th:href="@{/actors/{id}(id=${actor.getId()})}"
+       th:text="${actor.getName()}">user</a>
+</div>
+<br/>
+<form th:method="GET" th:action="@{/movies}">
+    <input type="submit" value="Return">
+</form>
+</body>
+</html>

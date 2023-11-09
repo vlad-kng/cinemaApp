@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 @Controller
-@RequestMapping("/movies")
+@RequestMapping("/admin/movies")
 public class MoviesController {
     private final MoviesService moviesService;
     private final ActorService actorService;
@@ -38,7 +38,7 @@ public class MoviesController {
     @GetMapping()
     public String index(Model model){
         model.addAttribute("movies", moviesService.findAll());
-        return "movie/index";
+        return "admin/movie/index";
     }
     @GetMapping("/{id}")
     public String show(Model model, @PathVariable("id") int id){
@@ -47,11 +47,11 @@ public class MoviesController {
         moviesService.update(id, movie);
         model.addAttribute("movie", movie);
         model.addAttribute("actors", movie.getActors());
-        return "movie/show";
+        return "admin/movie/show";
     }
     @GetMapping("/new")
     public String newMovie(@ModelAttribute("movie")Movie movie){
-        return "movie/new";
+        return "admin/movie/new";
     }
 
     @PostMapping("/new/add")
@@ -85,12 +85,12 @@ public class MoviesController {
             }
         movie.setDirector(director);
         moviesService.save(movie);
-        return "redirect:/movies";
+        return "redirect:/admin/movies";
     }
     @GetMapping("/{id}/edit")
     public String edit(Model model, @PathVariable("id") int id) {
         model.addAttribute("movie", moviesService.findOne(id));
-        return "movie/edit";
+        return "admin/movie/edit";
     }
 
     @PatchMapping("/{id}")
@@ -98,10 +98,10 @@ public class MoviesController {
                          BindingResult bindingResult, @PathVariable("id") int id){
         movieValidator.validate(movie, bindingResult);
         if(bindingResult.hasErrors())
-            return "movie/edit";
+            return "admin/movie/edit";
 
         moviesService.update(id,movie);
-        return "redirect:/movies";
+        return "redirect:/admin/movies";
     }
     @GetMapping("/{id}/{actorId}/remove")
     public String removeActor(@ModelAttribute("actor") Actor actor,
@@ -111,7 +111,7 @@ public class MoviesController {
         actor = actorService.findOne(actorId);
         actor.removeMovie(movie);
         actorService.save(actor);
-        return "redirect:/movies/{id}/edit";
+        return "redirect:/admin/movies/{id}/edit";
     }
     @GetMapping("/{id}/addActor")
     public String addActor(Model model, @PathVariable("id") int id, @ModelAttribute("actor") Actor actor){
@@ -121,7 +121,7 @@ public class MoviesController {
         actors.removeAll(movieActors);
         model.addAttribute("movie", movie);
         model.addAttribute("actors", actors);
-        return "movie/addActor";
+        return "admin/movie/addActor";
     }
     @PatchMapping("/{id}/addActor/add")
     public String add(Model model, @PathVariable("id") int id, @ModelAttribute("actor") Actor actor){
@@ -133,7 +133,7 @@ public class MoviesController {
         actorService.save(actor);
         model.addAttribute("movie", movie);
         model.addAttribute("actor", actor);
-        return "redirect:/movies/{id}";
+        return "redirect:/admin/movies/{id}";
     }
 
     @DeleteMapping("/{id}/delete")
@@ -148,16 +148,16 @@ public class MoviesController {
 //        movie=movie.removeActors();
 //        moviesService.save(movie);
         moviesService.delete(movie);
-        return "redirect:/movies";
+        return "redirect:/admin/movies";
     }
 
     @GetMapping("/search")
     public String searchPage(){
-        return "movie/search";
+        return "admin/movie/search";
     }
     @PostMapping("/search")
     public String makeSearch(Model model, @RequestParam("query") String query){
         model.addAttribute("movies", moviesService.searchByName(query));
-        return "movie/search";
+        return "admin/movie/search";
     }
 }
