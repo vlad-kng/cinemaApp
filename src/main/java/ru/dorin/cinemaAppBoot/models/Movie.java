@@ -2,12 +2,14 @@ package ru.dorin.cinemaAppBoot.models;
 
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import org.hibernate.annotations.Cascade;
 import org.springframework.format.annotation.NumberFormat;
+import ru.dorin.cinemaAppBoot.models.user.UserProfile;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.*;
 
 @Entity
@@ -18,10 +20,10 @@ public class Movie {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @NotNull(message = "Name should not be empty")
-    @Size(min = 2, max = 100, message = "Name should be between 2 and 30 char")
+    @Size(min = 2, max = 100, message = "Name should be between 2 and 100 char")
     @Column(name = "name")
     private String name;
-    @Min(value = 1965, message = "The first film was made in 1965")
+    @Min(value = 1865, message = "The first film was made in 1865")
     @Column(name = "year_of_production")
     private int yearOfProduction;
     @Max(value = 10, message = "The max rate is 10.0")
@@ -50,17 +52,28 @@ public class Movie {
     private String[] actorsName;
 
     @Column(name = "movie_genre")
-    @Enumerated(EnumType.STRING)
-    private Genre genre;
+        private String genre;
+
+    @ManyToMany(mappedBy = "moviesLiked")
+    @Cascade({org.hibernate.annotations.CascadeType.PERSIST,
+            org.hibernate.annotations.CascadeType.MERGE,
+            org.hibernate.annotations.CascadeType.REFRESH,
+            org.hibernate.annotations.CascadeType.DETACH})
+    private Set<UserProfile> usersWhoLiked;
     @NotNull(message = "the movie should have a poster")
     @Column(name = "poster")
     private String poster;
+
+    @Column(name= "like_count")
+    private int likeCount;
+
+
 
 
     public Movie() {
     }
 
-    public Movie(String name, int yearOfProduction, double rate, String info, Director director, Genre genre, String poster) {
+    public Movie(String name, int yearOfProduction, double rate, String info, Director director, String genre, String poster) {
         this.name = name;
         this.yearOfProduction = yearOfProduction;
         this.rate = rate;
@@ -68,8 +81,9 @@ public class Movie {
         this.director = director;
         this.genre = genre;
         this.poster = poster;
+        this.usersWhoLiked=new HashSet<>();
     }
-    public Movie(String name, int yearOfProduction, double rate, String info, Genre genre, String directorName, String actorName, String poster) {
+    public Movie(String name, int yearOfProduction, double rate, String info, String genre, String directorName, String actorName, String poster) {
         this.name = name;
         this.yearOfProduction = yearOfProduction;
         this.rate = rate;
@@ -78,6 +92,7 @@ public class Movie {
         this.director = new Director(directorName);
         this.actors = new ArrayList<>(Collections.singletonList(new Actor(actorName)));
         this.poster=poster;
+        this.usersWhoLiked = new HashSet<>();
     }
 
     public int getId() {
@@ -158,12 +173,6 @@ public class Movie {
         actors.forEach(actor -> {actors.remove(actor);
         actor.removeMovie(this);});
 
-//        List<Actor> removal = actors;
-//        for (Actor actor : removal) {
-//            actor.removeMovie(movie);
-//            actors.remove(actor);
-//
-//        }
         return this;
     }
 
@@ -196,11 +205,11 @@ public class Movie {
         this.actorsName = actorsName;
     }
 
-    public Genre getGenre() {
+    public String getGenre() {
         return genre;
     }
 
-    public void setGenre(Genre genre) {
+    public void setGenre(String genre) {
         this.genre = genre;
     }
 
@@ -222,6 +231,46 @@ public class Movie {
     @Override
     public int hashCode() {
         return Objects.hash(id, name, yearOfProduction, rate, info, director);
+    }
+
+    public Set<UserProfile> getUsersWhoLiked() {
+        return usersWhoLiked;
+    }
+
+    public void setUsersWhoLiked(Set<UserProfile> usersWhoLiked) {
+        this.usersWhoLiked = usersWhoLiked;
+        likeCount=usersWhoLiked.size();
+    }
+
+    public void addUserWhoLiked(UserProfile user){
+        usersWhoLiked.add(user);
+        likeCount++;
+    }
+    public void removeUserWhoLiked(UserProfile user){
+        usersWhoLiked.remove(user);
+        likeCount--;
+    }
+    public boolean isMovieLikedByUser(UserProfile user){
+        return usersWhoLiked.contains(user);
+    }
+    public int getLikeCount(){
+        return likeCount;
+    }
+
+    public void like(UserProfile user){
+        if(user.isMovieDisliked(this)){
+            user.removeMovieFromDislike(this);
+        }
+        if(!isMovieLikedByUser(user)){
+            addUserWhoLiked(user);
+            user.addLikedMovie(this);
+        }else{
+            removeUserWhoLiked(user);
+            user.removeLikedMovie(this);
+        }
+    }
+    public String likeText(UserProfile user){
+        return isMovieLikedByUser(user)? "Unlike" : "Like";
     }
 }
 

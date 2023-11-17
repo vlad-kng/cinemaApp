@@ -4,15 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import ru.dorin.cinemaAppBoot.models.Actor;
-import ru.dorin.cinemaAppBoot.models.Movie;
 import ru.dorin.cinemaAppBoot.models.user.Role;
 import ru.dorin.cinemaAppBoot.models.user.UserProfile;
 import ru.dorin.cinemaAppBoot.services.MoviesService;
 import ru.dorin.cinemaAppBoot.services.UserDetailsServiceImpl;
-
-import java.util.List;
-import java.util.Set;
 
 @Controller
 @RequestMapping("/admin")

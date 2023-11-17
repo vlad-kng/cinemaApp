@@ -1,7 +1,11 @@
 1. separate functional on user/admin +
 2. create admin page +
 3. add posters to movie +
-4. add likes for movies
-5. create recommender for movies
-6. create movie parser for imbd or kinopoisk
+4. add likes for movies +
+5. create user personal area + (need to update after recommender will created)
+5.1. add dislike + and watched +
+6. create recommender for movies
+7. create movie consumer from kinopoisk +
+8. update edit form for admin +
+9. set design and contacts.
 

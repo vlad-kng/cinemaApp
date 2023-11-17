@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import ru.dorin.cinemaAppBoot.models.user.Role;
 import ru.dorin.cinemaAppBoot.models.user.UserProfile;
 import ru.dorin.cinemaAppBoot.services.RegistrationService;
 import ru.dorin.cinemaAppBoot.util.UserValidator;

@@ -77,12 +77,12 @@ public class Actor {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Actor actor)) return false;
-        return id == actor.id && name.equals(actor.name);
+        return name.equals(actor.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name);
+        return Objects.hash(name);
     }
 
     public void removeMovie(Movie movie) {

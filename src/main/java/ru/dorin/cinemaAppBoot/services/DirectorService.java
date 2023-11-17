@@ -35,6 +35,8 @@ public class DirectorService {
         Director director = new Director(directorName);
         directorRepository.save(director);
     }
+    @Transactional
+    public void saveAll(Iterable<Director> directors){directorRepository.saveAll(directors);}
 
     @Transactional
     public void update(int id, Director director){

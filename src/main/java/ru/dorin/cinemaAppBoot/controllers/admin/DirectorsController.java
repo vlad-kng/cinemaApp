@@ -4,10 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import ru.dorin.cinemaAppBoot.models.Actor;
 import ru.dorin.cinemaAppBoot.models.Director;
 import ru.dorin.cinemaAppBoot.models.Movie;
-import ru.dorin.cinemaAppBoot.services.ActorService;
 import ru.dorin.cinemaAppBoot.services.DirectorService;
 import ru.dorin.cinemaAppBoot.services.MoviesService;
 

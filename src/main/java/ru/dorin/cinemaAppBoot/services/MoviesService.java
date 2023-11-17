@@ -1,9 +1,9 @@
 package ru.dorin.cinemaAppBoot.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.dorin.cinemaAppBoot.models.Actor;
 import ru.dorin.cinemaAppBoot.models.Movie;
 import ru.dorin.cinemaAppBoot.repositories.MoviesRepository;
 
@@ -22,6 +22,11 @@ public class MoviesService {
     public List<Movie> findAll(){
         return moviesRepository.findAll();
     }
+
+    public List<Movie> findAllSortedByYearAndRate(){
+       Sort sortedBy = Sort.by(new Sort.Order(Sort.Direction.DESC, "yearOfProduction"), new Sort.Order(Sort.Direction.DESC, "rate"));
+        return moviesRepository.findAll(sortedBy);
+    }
     public Movie findOne(int id){
         Optional<Movie> movie=moviesRepository.findById(id);
         return movie.orElse(null);
@@ -30,6 +35,9 @@ public class MoviesService {
     public void save(Movie movie){
         moviesRepository.save(movie);
     }
+
+    @Transactional
+    public void saveAll(Iterable<Movie> movies){moviesRepository.saveAll(movies);}
     @Transactional
     public void update(int id, Movie updatedMovie){
         updatedMovie.setId(id);
@@ -55,4 +63,5 @@ public class MoviesService {
     public List<Movie> searchByName(String query) {
         return moviesRepository.searchByNameContainingIgnoreCase(query);
     }
+
 }

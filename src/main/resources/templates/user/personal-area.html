@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${user.getName()}">User</title>
+</head>
+<body>
+<p th:text="${'User: ' + user.getName()}">VALUE</p>
+<p>Liked movies</p>
+<div th:each="movie : ${user.getMoviesLiked()}">
+    <a th:href="@{/movies/{id}(id=${movie.getId()})}"
+       th:text="${movie.getName()}">user</a>
+</div>
+<br/>
+<p>Disliked movies</p>
+<div th:each="movie : ${user.getNotInterestedMovies()}">
+    <a th:href="@{/movies/{id}(id=${movie.getId()})}"
+       th:text="${movie.getName()}">user</a>
+</div>
+<br/>
+<p>Watched movies</p>
+<div th:each="movie : ${user.getMoviesWatched()}">
+    <a th:href="@{/movies/{id}(id=${movie.getId()})}"
+       th:text="${movie.getName()}">user</a>
+    <a th:href="@{/personal-area/{movieId}/remove-watched-movie(movieId=${movie.getId()})}"
+       th:text="x"/>
+</div>
+
+<br/>
+<form th:method="GET" th:action="@{/movies}">
+    <input type="submit" value="Movies">
+</form>
+</body>
+</html>

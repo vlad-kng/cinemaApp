@@ -61,12 +61,12 @@ public class Director {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Director director)) return false;
-        return id == director.id && name.equals(director.name);
+        return name.equals(director.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name);
+        return Objects.hash(name);
     }
 
     public void removeMovie(Movie movie) {

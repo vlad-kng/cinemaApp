@@ -15,9 +15,7 @@ import ru.dorin.cinemaAppBoot.services.MoviesService;
 import ru.dorin.cinemaAppBoot.util.DirectorValidator;
 import ru.dorin.cinemaAppBoot.util.MovieValidator;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 @Controller
 @RequestMapping("/admin/movies")
@@ -37,7 +35,7 @@ public class MoviesController {
     }
     @GetMapping()
     public String index(Model model){
-        model.addAttribute("movies", moviesService.findAll());
+        model.addAttribute("movies", moviesService.findAllSortedByYearAndRate());
         return "admin/movie/index";
     }
     @GetMapping("/{id}")
@@ -56,11 +54,6 @@ public class MoviesController {
 
     @PostMapping("/new/add")
     public String create(@ModelAttribute("movie") Movie movie){
-//        movieValidator.validate(movie, bindingResult);
-//        movieValidator.validate(director, bindingResult);
-//        directorValidator.validateNewDirector(director, bindingResult);
-//        if(bindingResult.hasErrors())
-//            return "movie/new";
         List<Director> directors = directorService.findByName(movie.getDirectorName());
         Director director = new Director();
         if(directors.size()<1){

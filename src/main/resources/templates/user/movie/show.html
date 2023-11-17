@@ -5,6 +5,13 @@
     <title th:text="${movie.getName()}">Movie</title>
 </head>
 <body>
+<div>
+    <a th:href="@{/personal-area}">
+        <img class="user-icon" th:src="@{https://avatars.mds.yandex.net/get-yapic/0/0-0/islands-middle}"/>
+    </a>
+</div>
+<img class="poster" th:src="@{${movie.getPoster()}}" width="450"
+     height="450" alt=""/>
 <p th:text="${'Movie:' + movie.getName()}">VALUE</p>
 <p th:text="${'Year of production: ' + movie.getYearOfProduction()}">VALUE</p>
 <a th:href="@{/directors/{id}(id=${movie.getDirectorId()})}"
@@ -12,11 +19,29 @@
 <br/>
 <p th:text="${'Info: ' + movie.getInfo()}">VALUE</p>
 <p th:text="${'Rate: ' + movie.getRate()}">VALUE</p>
+<p th:text="${'Genre: ' + movie.getGenre()}">VALUE</p>
 <p>Actors: </p>
 <div th:each="actor : ${actors}">
     <a th:href="@{/actors/{id}(id=${actor.getId()})}"
        th:text="${actor.getName()}">user</a>
 </div>
+<form th:method="PATCH" th:action="@{/movies/{id}/like(id=${movie.getId()})}">
+    <p th:text="${'Likes: ' + movie.getLikeCount()}"></p>
+    <input type="submit" th:value="${movie.likeText(user)}"/>
+</form>
+<br/>
+<div th:if="${!user.isMovieDisliked(movie)}">
+<form th:method="PATCH" th:action="@{/movies/{id}/dislike(id=${movie.getId()})}">
+        <input type="submit" value="Dislike"/>
+</form>
+</div>
+
+<div th:if="${!user.isMovieWatched(movie)}">
+    <form th:method="PATCH" th:action="@{/movies/{id}/watched(id=${movie.getId()})}">
+        <input type="submit" value="Watched"/>
+    </form>
+</div>
+
 <br/>
 <form th:method="GET" th:action="@{/movies}">
     <input type="submit" value="Return">

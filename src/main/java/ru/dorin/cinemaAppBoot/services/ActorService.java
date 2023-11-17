@@ -7,7 +7,6 @@ import ru.dorin.cinemaAppBoot.models.Actor;
 import ru.dorin.cinemaAppBoot.repositories.ActorsRepository;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -36,6 +35,8 @@ public class ActorService {
         Actor actor = new Actor(actorName);
         actorsRepository.save(actor);
     }
+    @Transactional
+    public void saveAll(Iterable<Actor> actors){actorsRepository.saveAll(actors);}
     @Transactional
     public void update(int id, Actor updatedActor){
         updatedActor.setId(id);

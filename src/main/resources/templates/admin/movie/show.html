@@ -12,6 +12,7 @@
 <br/>
 <p th:text="${'Info: ' + movie.getInfo()}">VALUE</p>
 <p th:text="${'Rate: ' + movie.getRate()}">VALUE</p>
+<p th:text="${'Genre: ' + movie.getGenre()}">VALUE</p>
 <p>Actors: </p>
 <div th:each="actor : ${actors}">
     <a th:href="@{/admin/actors/{id}(id=${actor.getId()})}"

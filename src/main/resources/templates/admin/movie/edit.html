@@ -24,12 +24,15 @@
   <br/>
   <label for="genre">Genre: </label>
   <input type="text" th:field="*{genre}" id="genre"/>
-  <div style="color:red" th:if="${#fields.hasErrors('genre')}" th:errors="*{genre}">Genre Error</div>
+  <div style="color:red" th:if="${#fields.hasErrors('string')}" th:errors="*{string}">Genre Error</div>
   <br/>
 
   <label for="director">Director: </label>
   <input type="text" th:field="*{director}" id="director"/>
   <!--    <div style="color:red" th:if="${#fields.hasErrors('director')}" th:errors="*{director}">Director Error</div>-->
+  <br/>
+  <label for="poster">Enter poster URL: </label>
+  <input type="text" th:field="*{poster}" id="poster"/>
   <br/>
   <input type="submit" value="Update!"/>
 </form>

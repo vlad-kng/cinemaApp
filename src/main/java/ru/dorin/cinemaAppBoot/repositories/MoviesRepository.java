@@ -1,10 +1,10 @@
 package ru.dorin.cinemaAppBoot.repositories;
 
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-import ru.dorin.cinemaAppBoot.models.Actor;
 import ru.dorin.cinemaAppBoot.models.Movie;
 
 import java.util.List;
@@ -19,4 +19,6 @@ public interface MoviesRepository extends JpaRepository<Movie,Integer> {
 //    List<Movie> searchByNameIgnoreCaseStartingWith(String query);
 
     List<Movie> searchByNameContainingIgnoreCase(String query);
+
+
 }

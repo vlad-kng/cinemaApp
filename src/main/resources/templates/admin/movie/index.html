@@ -11,10 +11,9 @@
 <p>All movies:</p>
 <div class="movies">
 <div class="single-movie-container" th:each="movie : ${movies}">
-    <h3 class="movie-name" th:text="${movie.getName()}">Name</h3>
+    <a class="movie-name" th:href="@{/admin/movies/{id}(id=${movie.getId()})}"
+       th:text="${movie.getName()}">Name</a>
     <span class="movie-year" th:text="${movie.getYearOfProduction()}">Year</span>
-    <a th:href="@{/admin/movies/{id}(id=${movie.getId()})}">
-    <img class="poster" th:src="@{${movie.getPoster()}}"/></a>
 </div>
 </div>
 

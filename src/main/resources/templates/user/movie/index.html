@@ -5,13 +5,25 @@
     <title>All movies</title>
 </head>
 <body>
-<form th:method="GET" th:action="@{/movies/search}">
-    <input type="submit" value="Search movie">
-</form>
+    <h1>Movies</h1>
+    <form th:method="GET" th:action="@{/movies/search}">
+        <input type="submit" value="Search movie">
+    </form>
+    <div>
+        <a th:href="@{/personal-area}">
+            <img class="user-icon" th:src="@{https://avatars.mds.yandex.net/get-yapic/0/0-0/islands-middle}"/>
+        </a>
+    </div>
+
 <p>All movies:</p>
-<div th:each="movie : ${movies}">
-  <a th:href="@{/movies/{id}(id=${movie.getId()})}"
-     th:text="${movie.getName() + ', ' + movie.getYearOfProduction()}">user</a>
+<div class="movies">
+    <div class="single-movie-container" th:each="movie : ${movies}">
+        <h3 class="movie-name" th:text="${movie.getName()}">Name</h3>
+        <span class="movie-year" th:text="${movie.getYearOfProduction()}">Year</span>
+        <a th:href="@{/movies/{id}(id=${movie.getId()})}">
+            <img class="poster" th:src="@{${movie.getPoster()}}" width="350"
+                 height="350" alt=""/></a>
+    </div>
 </div>
 <br/>
 <hr/>

@@ -1,17 +1,14 @@
 package ru.dorin.cinemaAppBoot.controllers.admin;
 
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.dorin.cinemaAppBoot.models.Actor;
 import ru.dorin.cinemaAppBoot.models.Movie;
 import ru.dorin.cinemaAppBoot.services.ActorService;
 import ru.dorin.cinemaAppBoot.services.MoviesService;
 
-import java.util.List;
 import java.util.Set;
 
 @Controller

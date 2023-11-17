@@ -7,6 +7,7 @@ import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Cascade;
 import ru.dorin.cinemaAppBoot.models.Actor;
 import ru.dorin.cinemaAppBoot.models.Movie;
 
@@ -81,7 +82,17 @@ public class UserProfile {
             inverseJoinColumns = @JoinColumn(name="actor_id"))
     private Set<Actor> favoriteActors;
 
-//    private Set<Movie> moviesLike; //допилить
+    @Getter
+    @ManyToMany()
+    @JoinTable(
+            name="user_movie_liked",
+            joinColumns = @JoinColumn(name="user_id"),
+            inverseJoinColumns = @JoinColumn(name="movie_id"))
+    @Cascade({org.hibernate.annotations.CascadeType.PERSIST,
+            org.hibernate.annotations.CascadeType.MERGE,
+            org.hibernate.annotations.CascadeType.REFRESH,
+            org.hibernate.annotations.CascadeType.DETACH})
+    private Set<Movie> moviesLiked;
 
 
     public UserProfile(String username, String password, String name, int yearOfBirth, String email) {
@@ -91,5 +102,47 @@ public class UserProfile {
         this.yearOfBirth = yearOfBirth;
         this.email = email;
         this.role = Role.ROLE_USER;
+    }
+
+    public void addLikedMovie(Movie movie){
+        moviesLiked.add(movie);
+    }
+    public void removeLikedMovie(Movie movie){
+        moviesLiked.remove(movie);
+    }
+
+    public boolean isMovieLiked(Movie movie){
+        return moviesLiked.contains(movie);
+    }
+
+    public boolean isMovieDisliked(Movie movie){
+        return notInterestedMovies.contains(movie);
+    }
+    public void addMovieToDislike(Movie movie)
+    {
+        if(movie.isMovieLikedByUser(this)){
+            movie.like(this);
+        }
+        notInterestedMovies.add(movie);
+    }
+    public void removeMovieFromDislike(Movie movie){
+        notInterestedMovies.remove(movie);
+    }
+
+    public void dislike(Movie movie){
+        if(!isMovieDisliked(movie)){
+            addMovieToDislike(movie);
+        }else removeMovieFromDislike(movie);
+    }
+
+    public boolean isMovieWatched(Movie movie){
+        return moviesWatched.contains(movie);
+    }
+
+    public void addWatchedMovie(Movie movie){
+        moviesWatched.add(movie);
+    }
+    public void removeWatchedMovie(Movie movie){
+        moviesWatched.remove(movie);
     }
 }

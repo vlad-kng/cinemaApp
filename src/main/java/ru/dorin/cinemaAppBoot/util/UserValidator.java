@@ -7,7 +7,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 import ru.dorin.cinemaAppBoot.models.user.UserProfile;
-import ru.dorin.cinemaAppBoot.security.UserDetailsImpl;
 import ru.dorin.cinemaAppBoot.services.UserDetailsServiceImpl;
 
 @Component

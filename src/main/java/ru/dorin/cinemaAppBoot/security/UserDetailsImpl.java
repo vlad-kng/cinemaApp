@@ -1,6 +1,5 @@
 package ru.dorin.cinemaAppBoot.security;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -49,5 +48,13 @@ public class UserDetailsImpl implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public UserProfile getUser(){
+        return user;
+    }
+
+    public int getId(){
+        return user.getId();
     }
 }
