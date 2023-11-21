@@ -6,12 +6,20 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.Cascade;
 import org.springframework.format.annotation.NumberFormat;
 import ru.dorin.cinemaAppBoot.models.user.UserProfile;
 
 import java.util.*;
 
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "movie")
 public class Movie {
@@ -67,12 +75,6 @@ public class Movie {
     @Column(name= "like_count")
     private int likeCount;
 
-
-
-
-    public Movie() {
-    }
-
     public Movie(String name, int yearOfProduction, double rate, String info, Director director, String genre, String poster) {
         this.name = name;
         this.yearOfProduction = yearOfProduction;
@@ -95,54 +97,6 @@ public class Movie {
         this.usersWhoLiked = new HashSet<>();
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public int getYearOfProduction() {
-        return yearOfProduction;
-    }
-
-    public void setYearOfProduction(int yearOfProduction) {
-        this.yearOfProduction = yearOfProduction;
-    }
-
-    public double getRate() {
-        return rate;
-    }
-
-    public void setRate(double rate) {
-        this.rate = rate;
-    }
-
-    public String getInfo() {
-        return info;
-    }
-
-    public void setInfo(String info) {
-        this.info = info;
-    }
-
-    public String getPoster() {
-        return poster;
-    }
-
-    public void setPoster(String poster) {
-        this.poster = poster;
-    }
-
     public Director getDirector() {
         if (director==null){return null;}
         return director;
@@ -154,10 +108,6 @@ public class Movie {
 
     public int getDirectorId() {
         return director.getId();
-    }
-
-    public void setDirector(Director director) {
-        this.director = director;
     }
 
     public List<Actor> getActors() {
@@ -172,7 +122,6 @@ public class Movie {
     public Movie removeActors(){
         actors.forEach(actor -> {actors.remove(actor);
         actor.removeMovie(this);});
-
         return this;
     }
 
@@ -188,7 +137,6 @@ public class Movie {
                 this.actors.add(actor);
             }
         }
-
     }
     public void deleteActors() {
         this.actors = null;    }
@@ -205,13 +153,6 @@ public class Movie {
         this.actorsName = actorsName;
     }
 
-    public String getGenre() {
-        return genre;
-    }
-
-    public void setGenre(String genre) {
-        this.genre = genre;
-    }
 
     @Override
     public String toString() {
@@ -231,10 +172,6 @@ public class Movie {
     @Override
     public int hashCode() {
         return Objects.hash(id, name, yearOfProduction, rate, info, director);
-    }
-
-    public Set<UserProfile> getUsersWhoLiked() {
-        return usersWhoLiked;
     }
 
     public void setUsersWhoLiked(Set<UserProfile> usersWhoLiked) {

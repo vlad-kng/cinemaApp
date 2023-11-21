@@ -2,6 +2,7 @@ package ru.dorin.cinemaAppBoot.models;
 
 
 import jakarta.persistence.*;
+import lombok.*;
 
 import java.util.Objects;
 import java.util.Set;
@@ -9,6 +10,10 @@ import java.util.Set;
 
 @Entity
 @Table(name="director")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Director {
     @Id
     @Column(name="id")
@@ -19,34 +24,15 @@ public class Director {
     @OneToMany(mappedBy = "director", cascade = CascadeType.PERSIST, orphanRemoval = false)
     private Set<Movie> movies;
 
-    public Director(){}
-
     public Director(String name) {
         this.name = name;
     }
 
-    public int getId() {
-        return id;
+    public void addMovie(Movie movie){
+        movies.add(movie);
     }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Set<Movie> getMovies() {
-        return movies;
-    }
-
-    public void setMovies(Set<Movie> movies) {
-        this.movies = movies;
+    public void removeMovie(Movie movie) {
+        movies.remove(movie);
     }
 
     @Override
@@ -56,7 +42,6 @@ public class Director {
                 ", name='" + name +
                 '}';
     }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -69,7 +54,5 @@ public class Director {
         return Objects.hash(name);
     }
 
-    public void removeMovie(Movie movie) {
-        movies.remove(movie);
-    }
+
 }

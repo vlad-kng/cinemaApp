@@ -8,4 +8,7 @@
 7. create movie consumer from kinopoisk +
 8. update edit form for admin +
 9. set design and contacts.
+10. connect to liquibase+
+11. add tests
+12. create methods for Consumer
 

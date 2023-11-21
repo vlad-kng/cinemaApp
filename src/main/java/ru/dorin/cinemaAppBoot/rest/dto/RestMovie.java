@@ -1,4 +1,4 @@
-package ru.dorin.cinemaAppBoot.controllers.admin.rest.model;
+package ru.dorin.cinemaAppBoot.rest.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;

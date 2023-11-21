@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-@Transactional(readOnly = true)
 public class MoviesService {
     private MoviesRepository moviesRepository;
 
@@ -31,27 +30,21 @@ public class MoviesService {
         Optional<Movie> movie=moviesRepository.findById(id);
         return movie.orElse(null);
     }
-    @Transactional
     public void save(Movie movie){
         moviesRepository.save(movie);
     }
 
-    @Transactional
     public void saveAll(Iterable<Movie> movies){moviesRepository.saveAll(movies);}
-    @Transactional
     public void update(int id, Movie updatedMovie){
         updatedMovie.setId(id);
         moviesRepository.save(updatedMovie);
     }
-    @Transactional
     public void delete(int id){
         moviesRepository.deleteById(id);
     }
-    @Transactional
     public void delete(Movie movie){
         moviesRepository.delete(movie);
     }
-    @Transactional
     public void removeActorsFromMovie(int movieId){
         moviesRepository.removeActorsFromMovie(movieId);
     }

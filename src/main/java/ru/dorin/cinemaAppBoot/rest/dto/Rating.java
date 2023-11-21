@@ -1,4 +1,4 @@
-package ru.dorin.cinemaAppBoot.controllers.admin.rest.model;
+package ru.dorin.cinemaAppBoot.rest.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
@@ -11,6 +11,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Genre {
-    private String name;
+public class Rating {
+    private Double kp;
+    private Double imbd;
+    private Double filmCritics;
+    private Double russianFilmCritics;
+    private Double await;
+
 }

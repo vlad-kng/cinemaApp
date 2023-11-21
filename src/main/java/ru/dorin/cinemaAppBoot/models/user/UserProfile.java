@@ -16,56 +16,38 @@ import java.util.Set;
 @Entity
 @Table(name = "user_profile")
 @NoArgsConstructor
+@Getter
+@Setter
 public class UserProfile {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    @Getter
-    @Setter
     private int id;
     @NotNull
     @Column(name="username")
-    @Getter
-    @Setter
     private String username;
     @NotNull
-    @Getter
-    @Setter
     @Column(name = "password")
     private String password;
     @NotNull
-    @Getter
-    @Setter
     @Size(min = 2, max = 100, message = "Name should be between 2 and 30 char")
     @Column(name="name")
     private String name;
     @NotNull
-    @Getter
-    @Setter
     @Column(name="year_of_birth")
     private int yearOfBirth;
 
-    @Getter
-    @Setter
     @Column(name="email")
     private String email;
     @Column(name = "role")
-    @Getter
-    @Setter
     @Enumerated(EnumType.STRING)
     private Role role;
-
-    @Getter
-    @Setter
     @OneToMany(cascade = CascadeType.PERSIST)
     @JoinTable(
             name="user_movie_watched",
             joinColumns = @JoinColumn(name="user_id"),
             inverseJoinColumns = @JoinColumn(name="movie_id"))
     private Set<Movie> moviesWatched;
-
-    @Getter
-    @Setter
     @OneToMany(cascade = CascadeType.PERSIST)
     @JoinTable(
             name="user_movie_not_interested",
@@ -73,16 +55,12 @@ public class UserProfile {
             inverseJoinColumns = @JoinColumn(name="movie_id"))
     private Set<Movie> notInterestedMovies;
 
-    @Getter
-    @Setter
     @OneToMany(cascade = CascadeType.PERSIST)
     @JoinTable(
             name="user_actor",
             joinColumns = @JoinColumn(name="user_id"),
             inverseJoinColumns = @JoinColumn(name="actor_id"))
     private Set<Actor> favoriteActors;
-
-    @Getter
     @ManyToMany()
     @JoinTable(
             name="user_movie_liked",

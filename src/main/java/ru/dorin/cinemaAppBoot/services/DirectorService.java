@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-@Transactional(readOnly = true)
 public class DirectorService {
     DirectorRepository directorRepository;
 
@@ -26,24 +25,19 @@ public class DirectorService {
         Optional<Director> director=directorRepository.findById(id);
         return director.orElse(null);
     }
-    @Transactional
     public void save(Director director){
         directorRepository.save(director);
     }
-    @Transactional
     public void save(String directorName){
         Director director = new Director(directorName);
         directorRepository.save(director);
     }
-    @Transactional
     public void saveAll(Iterable<Director> directors){directorRepository.saveAll(directors);}
 
-    @Transactional
     public void update(int id, Director director){
         director.setId(id);
         directorRepository.save(director);
     }
-    @Transactional
     public void delete(int id){
         directorRepository.deleteById(id);
     }

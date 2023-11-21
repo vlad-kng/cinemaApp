@@ -2,6 +2,7 @@ package ru.dorin.cinemaAppBoot.models;
 
 
 import jakarta.persistence.*;
+import lombok.*;
 import org.hibernate.annotations.Cascade;
 
 import java.util.HashSet;
@@ -10,6 +11,10 @@ import java.util.Set;
 
 @Entity
 @Table(name="actor")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Actor {
     @Id
     @Column(name="id")
@@ -29,40 +34,19 @@ public class Actor {
             org.hibernate.annotations.CascadeType.DETACH})
     private Set<Movie> movies;
 
-    public Actor(){}
 
     public Actor(String name) {
         this.name = name;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public Set<Movie> getMovies() {
-        return movies;
-    }
-
-    public void setMovies(Set<Movie> movies) {
-        this.movies = movies;
-    }
     public void addMovie(Movie movie){
         if(this.movies==null){
             movies=new HashSet<>();
         }
         movies.add(movie);
+    }
+    public void removeMovie(Movie movie) {
+        this.movies.remove(movie);
     }
 
     @Override
@@ -72,21 +56,15 @@ public class Actor {
                 ", name='" + name +
                 '}';
     }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Actor actor)) return false;
         return name.equals(actor.name);
     }
-
     @Override
     public int hashCode() {
         return Objects.hash(name);
-    }
-
-    public void removeMovie(Movie movie) {
-        this.movies.remove(movie);
     }
 }
 
