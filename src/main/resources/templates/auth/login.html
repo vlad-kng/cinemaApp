@@ -3,27 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <title>Login page</title>
+    <link rel="stylesheet" th:href="@{/static/css/login.css}">
 </head>
 <body>
+<div class="container">
+    <div class="form-container">
+        <form name="f" th:method="post" th:action="@{/auth/process_login}">
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
 
-<form name="f" th:method="post" th:action="@{/auth/process_login}">
-    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+            <label for="username">Введите имя пользователя: </label>
+            <input type="text" name="username" id="username"/>
+            <br/>
+            <label for="password">Введите пароль: </label>
+            <input type="password" name="password" id="password"/>
+            <br/>
+            <input type="submit" value="Login"/>
 
-    <label for="username">Введите имя пользователя: </label>
-    <input type="text" name="username" id="username"/>
-    <br/>
-    <label for="password">Введите пароль: </label>
-    <input type="password" name="password" id="password"/>
-    <br/>
-    <input type="submit" value="Login"/>
-
-    <div th:if="${param.error}" style="color: red">
-        Неправильные имя или пароль
+            <div th:if="${param.error}" style="color: red">
+                Неправильные имя или пароль
+            </div>
+        </form>
     </div>
-</form>
-<form th:method="GET" th:action="@{/auth/registration}">
-    <input type="submit" value="registration">
-</form>
+    <div class="form-container">
+        <form th:method="GET" th:action="@{/auth/registration}">
+            <input type="submit" value="registration">
+        </form>
+    </div>
+</div>
 
 </body>
 </html>

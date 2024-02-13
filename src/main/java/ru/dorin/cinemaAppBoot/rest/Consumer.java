@@ -9,6 +9,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.client.RestTemplate;
 import ru.dorin.cinemaAppBoot.models.Actor;
 import ru.dorin.cinemaAppBoot.models.Director;
@@ -46,8 +47,8 @@ public class Consumer {
         headers.add("accept", "application/json");
         headers.add("X-API-KEY", "35SXJ6P-9E7M16W-KTXVZ08-6NKWM6P");
         Map<String,Movie> movies = new HashMap();
-        Map<String, Actor> actors = new HashMap<>();
-        Map<String, Director> directors = new HashMap<>();
+        //Map<String, Actor> actors = new HashMap<>();
+        //Map<String, Director> directors = new HashMap<>();
         ObjectMapper mapper = new ObjectMapper();
         for (int pageNumber = 1; pageNumber <= 4; pageNumber++) {
             String format = String.format("https://api.kinopoisk.dev/v1.4/movie?page=%d&limit=250&selectFields=name&selectFields=alternativeName&selectFields=description&selectFields=year&selectFields=rating&selectFields=genres&selectFields=poster&selectFields=persons&sortField=rating.kp&sortType=-1&type=movie&typeNumber=1&status=&rating.kp=8-10", pageNumber);
@@ -57,14 +58,15 @@ public class Consumer {
             for (RestMovie restMovie : restMovies.getDocs()) {
                 Movie movie = restMovieToMovie(restMovie);
                 if(movie==null) continue;
-                directors.put(movie.getDirectorName(), movie.getDirector());
-                mergeActors(actors, movie.getActors()).forEach(actor -> actors.put(actor.getName(), actor));
+                //directors.put(movie.getDirectorName(), movie.getDirector());
+                //mergeActors(actors, movie.getActors()).forEach(actor -> actors.put(actor.getName(), actor));
                 movies.put(movie.getName(), movie);
             }
         }
-        moviesService.saveAll(movies.values());
-        actorService.saveAll(actors.values());
-        directorService.saveAll(directors.values());
+        movies.values().forEach(movie -> saveMovie(movie));
+        //moviesService.saveAll(movies.values());
+//        actorService.saveAll(actors.values());
+//        directorService.saveAll(directors.values());
 
         return "redirect:/admin";
     }
@@ -122,5 +124,29 @@ public class Consumer {
             resultList.add(actor);
         }
         return resultList;
+    }
+
+    public void saveMovie(Movie movie){
+        Movie movieToSave = new Movie(movie.getName(), movie.getYearOfProduction(), movie.getRate(), movie.getInfo(), movie.getGenre(),
+                    movie.getDirectorName(), "movie.getActorsName()[0]", movie.getPoster());
+        Director director;
+         List<Director> directors = directorService.findByName(movie.getDirectorName());
+        if(directors.size() >= 1){
+            director = directors.get(0);
+         } else director = new Director(movie.getDirectorName());
+            movieToSave.setDirector(director);
+
+        List<Actor> actorList = movie.getActors();
+        for (Actor actor : actorList) {
+            Actor actorFromDB = actorService.findByName(actor.getName());
+            if (actorFromDB != null){
+                actorFromDB.addMovie(movieToSave);
+                movieToSave.addActor(actorFromDB);
+            }else {
+                movieToSave.addActor(actor);
+                actor.addMovie(movieToSave);
+            }
+        }
+        moviesService.save(movie);
     }
 }

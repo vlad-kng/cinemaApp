@@ -109,7 +109,7 @@ public class MoviesController {
     @GetMapping("/{id}/addActor")
     public String addActor(Model model, @PathVariable("id") int id, @ModelAttribute("actor") Actor actor){
         Movie movie = moviesService.findOne(id);
-        List<Actor> movieActors = movie.getActors();
+        List<Actor> movieActors = movie.getActors().stream().toList();
         List<Actor> actors = actorService.findAll();
         actors.removeAll(movieActors);
         model.addAttribute("movie", movie);
@@ -132,7 +132,7 @@ public class MoviesController {
     @DeleteMapping("/{id}/delete")
     public String delete(@PathVariable("id") int id){
         Movie movie = moviesService.findOne(id);
-        List<Actor> actors = movie.getActors();
+        List<Actor> actors = movie.getActors().stream().toList();
         for (Actor actor : actors) {
             actor.removeMovie(movie);
             actorService.save(actor);

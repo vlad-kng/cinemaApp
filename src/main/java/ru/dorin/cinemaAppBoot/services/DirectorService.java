@@ -25,6 +25,7 @@ public class DirectorService {
         Optional<Director> director=directorRepository.findById(id);
         return director.orElse(null);
     }
+
     public void save(Director director){
         directorRepository.save(director);
     }
