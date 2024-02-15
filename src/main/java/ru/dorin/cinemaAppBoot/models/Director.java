@@ -3,6 +3,7 @@ package ru.dorin.cinemaAppBoot.models;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.Cascade;
 
 import java.util.Objects;
 import java.util.Set;
@@ -21,7 +22,11 @@ public class Director {
     private int id;
     @Column(name="name")
     private String name;
-    @OneToMany(mappedBy = "director", cascade = CascadeType.PERSIST, orphanRemoval = false)
+    @OneToMany(mappedBy = "director", orphanRemoval = false)
+    @Cascade({org.hibernate.annotations.CascadeType.PERSIST,
+            org.hibernate.annotations.CascadeType.MERGE,
+            org.hibernate.annotations.CascadeType.REFRESH
+    })
     private Set<Movie> movies;
 
     public Director(String name) {

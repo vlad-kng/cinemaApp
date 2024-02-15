@@ -53,8 +53,8 @@ public class Movie {
     @ManyToMany(mappedBy = "movies")
     @Cascade({org.hibernate.annotations.CascadeType.PERSIST,
             org.hibernate.annotations.CascadeType.MERGE,
-            org.hibernate.annotations.CascadeType.REFRESH,
-            org.hibernate.annotations.CascadeType.DETACH})
+            org.hibernate.annotations.CascadeType.REFRESH
+           })
     private List<Actor> actors;
     @Transient
     private String[] actorsName;
@@ -65,8 +65,8 @@ public class Movie {
     @ManyToMany(mappedBy = "moviesLiked")
     @Cascade({org.hibernate.annotations.CascadeType.PERSIST,
             org.hibernate.annotations.CascadeType.MERGE,
-            org.hibernate.annotations.CascadeType.REFRESH,
-            org.hibernate.annotations.CascadeType.DETACH})
+            org.hibernate.annotations.CascadeType.REFRESH
+            })
     private Set<UserProfile> usersWhoLiked;
     @NotNull(message = "the movie should have a poster")
     @Column(name = "poster")
@@ -94,6 +94,16 @@ public class Movie {
         this.director = new Director(directorName);
         this.actors = new ArrayList<>(Collections.singletonList(new Actor(actorName)));
         this.poster=poster;
+        this.usersWhoLiked = new HashSet<>();
+    }
+    public Movie(Movie movie) {
+        this.id = movie.id;
+        this.name = movie.name;
+        this.yearOfProduction = movie.yearOfProduction;
+        this.rate = movie.rate;
+        this.info = movie.info;
+        this.genre = movie.genre;
+        this.poster=movie.poster;
         this.usersWhoLiked = new HashSet<>();
     }
 

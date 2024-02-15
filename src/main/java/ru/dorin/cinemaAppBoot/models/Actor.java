@@ -30,8 +30,8 @@ public class Actor {
             inverseJoinColumns = @JoinColumn(name="movie_id"))
     @Cascade({org.hibernate.annotations.CascadeType.PERSIST,
             org.hibernate.annotations.CascadeType.MERGE,
-            org.hibernate.annotations.CascadeType.REFRESH,
-            org.hibernate.annotations.CascadeType.DETACH})
+            org.hibernate.annotations.CascadeType.REFRESH
+            })
     private Set<Movie> movies;
 
 

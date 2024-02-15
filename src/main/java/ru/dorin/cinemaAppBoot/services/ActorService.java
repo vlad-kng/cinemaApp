@@ -45,7 +45,8 @@ public class ActorService {
         Actor actor = null;
         try {
          actor = actorsRepository.findByName(name).get(0);
-        } catch (Exception ex){ex.printStackTrace();}
+        } catch (Exception ex){
+            System.out.printf("Актера %s нет в БД", name);;}
     return actor;
     }
     public List<Actor> findByMovie(int movieId){

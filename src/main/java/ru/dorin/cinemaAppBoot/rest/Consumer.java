@@ -30,6 +30,8 @@ public class Consumer {
 
     private static final String standartPoster = "https://yastatic.net/s3/kinopoisk-frontend/common-static/img/projector-logo/placeholder.svg";
 
+    Map<String,Movie> movies = new HashMap();
+
 
     @Autowired
     public Consumer(MoviesService moviesService, ActorService actorService, DirectorService directorService, MovieValidator movieValidator) {
@@ -46,9 +48,6 @@ public class Consumer {
         HttpHeaders headers = new HttpHeaders();
         headers.add("accept", "application/json");
         headers.add("X-API-KEY", "35SXJ6P-9E7M16W-KTXVZ08-6NKWM6P");
-        Map<String,Movie> movies = new HashMap();
-        //Map<String, Actor> actors = new HashMap<>();
-        //Map<String, Director> directors = new HashMap<>();
         ObjectMapper mapper = new ObjectMapper();
         for (int pageNumber = 1; pageNumber <= 4; pageNumber++) {
             String format = String.format("https://api.kinopoisk.dev/v1.4/movie?page=%d&limit=250&selectFields=name&selectFields=alternativeName&selectFields=description&selectFields=year&selectFields=rating&selectFields=genres&selectFields=poster&selectFields=persons&sortField=rating.kp&sortType=-1&type=movie&typeNumber=1&status=&rating.kp=8-10", pageNumber);
@@ -58,15 +57,10 @@ public class Consumer {
             for (RestMovie restMovie : restMovies.getDocs()) {
                 Movie movie = restMovieToMovie(restMovie);
                 if(movie==null) continue;
-                //directors.put(movie.getDirectorName(), movie.getDirector());
-                //mergeActors(actors, movie.getActors()).forEach(actor -> actors.put(actor.getName(), actor));
                 movies.put(movie.getName(), movie);
             }
         }
         movies.values().forEach(movie -> saveMovie(movie));
-        //moviesService.saveAll(movies.values());
-//        actorService.saveAll(actors.values());
-//        directorService.saveAll(directors.values());
 
         return "redirect:/admin";
     }
@@ -113,40 +107,30 @@ public class Consumer {
       return movie;
     }
 
-    private List<Actor> mergeActors(Map<String, Actor> actorMap, List<Actor> actorList){
-        List<Actor> resultList = new ArrayList<>();
-        for (Actor actor : actorList) {
-            Set<Movie> movies = actor.getMovies();
-            if(actorMap.containsKey(actor.getName())){
-                actor = actorMap.get(actor.getName());
-                movies.forEach(actor::addMovie);
-            }
-            resultList.add(actor);
-        }
-        return resultList;
-    }
-
     public void saveMovie(Movie movie){
-        Movie movieToSave = new Movie(movie.getName(), movie.getYearOfProduction(), movie.getRate(), movie.getInfo(), movie.getGenre(),
-                    movie.getDirectorName(), "movie.getActorsName()[0]", movie.getPoster());
+        Movie movieToSave = new Movie(movie); //создаем новый фильм из передаваемого, чтобы можно было итерироваться по movies
         Director director;
-         List<Director> directors = directorService.findByName(movie.getDirectorName());
+         List<Director> directors = directorService.findByName(movie.getDirectorName()); //проверяем есть ли режиссер в БД
         if(directors.size() >= 1){
             director = directors.get(0);
-         } else director = new Director(movie.getDirectorName());
-            movieToSave.setDirector(director);
+         } else {director = new Director(movie.getDirectorName()); //если нет в БД создаем, и сохраняем в БД (присваиваем id)
+            directorService.save(director);}
+            movieToSave.setDirector(director); //связываем с двух сторон фильм и режиссера
+            director.addMovie(movieToSave);
 
-        List<Actor> actorList = movie.getActors();
+        List<Actor> actorList = movie.getActors(); // берем актеров из переданного фильма
         for (Actor actor : actorList) {
-            Actor actorFromDB = actorService.findByName(actor.getName());
+            Actor actorFromDB = actorService.findByName(actor.getName()); //проверяем их по БД
             if (actorFromDB != null){
-                actorFromDB.addMovie(movieToSave);
+                actorFromDB.addMovie(movieToSave); //если есть в БД, связываем актера и фильм
                 movieToSave.addActor(actorFromDB);
             }else {
-                movieToSave.addActor(actor);
+                actor.removeMovie(movie); //если нет в БД, удаляем у актера переданный фильм, чтобы он не сохранялся в БД
+                actorService.save(actor); //сохраняем актера, получаем id
+                movieToSave.addActor(actor); //связываем актера и фильм
                 actor.addMovie(movieToSave);
             }
         }
-        moviesService.save(movie);
+        moviesService.save(movieToSave); //сохраняем фильм
     }
 }
