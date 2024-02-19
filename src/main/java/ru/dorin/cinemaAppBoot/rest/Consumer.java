@@ -50,7 +50,7 @@ public class Consumer {
         headers.add("accept", "application/json");
         headers.add("X-API-KEY", "35SXJ6P-9E7M16W-KTXVZ08-6NKWM6P");
         ObjectMapper mapper = new ObjectMapper();
-        for (int pageNumber = 1; pageNumber <= 4; pageNumber++) {
+        for (int pageNumber = 5; pageNumber <= 7; pageNumber++) {
             String format = String.format("https://api.kinopoisk.dev/v1.4/movie?page=%d&limit=250&selectFields=name&selectFields=alternativeName&selectFields=description&selectFields=year&selectFields=rating&selectFields=genres&selectFields=poster&selectFields=persons&sortField=rating.kp&sortType=-1&type=movie&typeNumber=1&status=&rating.kp=8-10", pageNumber);
             HttpEntity<String> request = new HttpEntity<>(format, headers);
             String response = restTemplate.exchange(format, HttpMethod.GET, request, String.class).getBody();
@@ -66,6 +66,8 @@ public class Consumer {
                 movies.put(movie.getName(), movie);
             }
         }
+        directorsDbCheck(directors);
+        actorsDbCheck(actors);
         mergeDirectors(directors, movies);
         mergeActors(actors, movies);
         moviesService.saveAll(movies.values());
@@ -156,6 +158,24 @@ public class Consumer {
     }
     */
 
+    public void directorsDbCheck(Map<String, Director> directors) {
+        for (Director director : directors.values()) {
+            List<Director> directorsList = directorService.findByName(director.getName()); //проверяем есть ли режиссер в БД
+            if (directorsList.size() >= 1) {
+                director = directorsList.get(0);
+                directors.put(director.getName(), director);
+            }
+        }
+    }
+    public void actorsDbCheck(Map<String, Actor> actors) {
+        for (Actor actor : actors.values()) {
+            Actor newActor = actorService.findByName(actor.getName()); //проверяем есть ли режиссер в БД
+            if (newActor != null) {
+                actor = newActor;
+                actors.put(actor.getName(), actor);
+            }
+        }
+    }
     public void mergeDirectors(Map<String, Director> directors, Map<String, Movie> movies) {
         for (Movie movie : movies.values()) {
             Director director = movie.getDirector();
