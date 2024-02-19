@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.Cascade;
 
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -34,6 +35,7 @@ public class Director {
     }
 
     public void addMovie(Movie movie){
+        if(movies == null) movies = new HashSet<>();
         movies.add(movie);
     }
     public void removeMovie(Movie movie) {

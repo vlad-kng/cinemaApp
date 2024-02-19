@@ -79,8 +79,8 @@ public class UserMovieController {
     @GetMapping("/{id}")
     public String show(Model model, @PathVariable("id") int id){
         Movie movie=moviesService.findOne(id);
-        movie.setActors(actorService.findByMovie(id));
-        moviesService.update(id, movie);
+        //movie.setActors(actorService.findByMovie(id));
+        //moviesService.update(id, movie);
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UserDetailsImpl authUser = (UserDetailsImpl) authentication.getPrincipal();
         UserProfile user = userDetailsService.findById(authUser.getId());

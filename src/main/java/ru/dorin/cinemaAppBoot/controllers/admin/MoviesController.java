@@ -41,8 +41,6 @@ public class MoviesController {
     @GetMapping("/{id}")
     public String show(Model model, @PathVariable("id") int id){
         Movie movie=moviesService.findOne(id);
-        movie.setActors(actorService.findByMovie(id));
-        moviesService.update(id, movie);
         model.addAttribute("movie", movie);
         model.addAttribute("actors", movie.getActors());
         return "admin/movie/show";
@@ -137,9 +135,6 @@ public class MoviesController {
             actor.removeMovie(movie);
             actorService.save(actor);
         }
-//        moviesService.removeActorsFromMovie(id);
-//        movie=movie.removeActors();
-//        moviesService.save(movie);
         moviesService.delete(movie);
         return "redirect:/admin/movies";
     }

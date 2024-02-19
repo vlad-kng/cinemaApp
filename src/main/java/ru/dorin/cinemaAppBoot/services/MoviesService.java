@@ -34,6 +34,7 @@ public class MoviesService {
         moviesRepository.save(movie);
     }
 
+
     public void saveAll(Iterable<Movie> movies){moviesRepository.saveAll(movies);}
     public void update(int id, Movie updatedMovie){
         updatedMovie.setId(id);

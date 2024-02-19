@@ -23,11 +23,11 @@ public class Actor {
     @Column(name="name")
     private String name;
 
-    @ManyToMany()
-    @JoinTable(
-            name="movie_actor",
-            joinColumns = @JoinColumn(name="actor_id"),
-            inverseJoinColumns = @JoinColumn(name="movie_id"))
+    @ManyToMany(mappedBy = "actors")
+//    @JoinTable(
+//            name="movie_actor",
+//            joinColumns = @JoinColumn(name="actor_id"),
+//            inverseJoinColumns = @JoinColumn(name="movie_id"))
     @Cascade({org.hibernate.annotations.CascadeType.PERSIST,
             org.hibernate.annotations.CascadeType.MERGE,
             org.hibernate.annotations.CascadeType.REFRESH
@@ -43,7 +43,13 @@ public class Actor {
         if(this.movies==null){
             movies=new HashSet<>();
         }
+        if (movies.contains(movie)) {movies.remove(movie);}
         movies.add(movie);
+    }
+
+    public Set<Movie> getMovies(){
+        if(movies == null) movies = new HashSet<>();
+        return movies;
     }
     public void removeMovie(Movie movie) {
         this.movies.remove(movie);

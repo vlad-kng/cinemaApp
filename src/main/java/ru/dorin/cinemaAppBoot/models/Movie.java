@@ -50,12 +50,16 @@ public class Movie {
     private String directorName;
 
     //    @NotEmpty(message = "a movie must have some actors")
-    @ManyToMany(mappedBy = "movies")
+    @ManyToMany()
+    @JoinTable(
+            name="movie_actor",
+            joinColumns = @JoinColumn(name="movie_id"),
+            inverseJoinColumns = @JoinColumn(name="actor_id"))
     @Cascade({org.hibernate.annotations.CascadeType.PERSIST,
             org.hibernate.annotations.CascadeType.MERGE,
             org.hibernate.annotations.CascadeType.REFRESH
            })
-    private List<Actor> actors;
+    private Set<Actor> actors;
     @Transient
     private String[] actorsName;
 
@@ -92,7 +96,7 @@ public class Movie {
         this.info = info;
         this.genre = genre;
         this.director = new Director(directorName);
-        this.actors = new ArrayList<>(Collections.singletonList(new Actor(actorName)));
+        this.actors = new HashSet<>(Collections.singletonList(new Actor(actorName)));
         this.poster=poster;
         this.usersWhoLiked = new HashSet<>();
     }
@@ -120,13 +124,14 @@ public class Movie {
         return director.getId();
     }
 
-    public List<Actor> getActors() {
+    public Set<Actor> getActors() {
         if(actors== null){return null;}
         return actors;
     }
 
     public void addActor(Actor actor) {
-        if (this.actors == null) this.actors = new ArrayList<>();
+        if (this.actors == null) this.actors = new HashSet<>();
+//        if (this.actors.contains(actor)) {actors.remove(actor);}
         this.actors.add(actor);
     }
     public Movie removeActors(){
@@ -139,7 +144,7 @@ public class Movie {
         this.actors.remove(actor);
     }
 
-    public void setActors(List<Actor> actors) {
+    public void setActors(Set<Actor> actors) {
         if (this.actors == null)
             this.actors = actors;
         else {
